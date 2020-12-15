@@ -11,7 +11,8 @@ export default class App extends Component {
     this.state = {
       userInfo: null,
       repos: [],
-      starred: []
+      starred: [],
+      isFetching: false
     }
   }
 
@@ -25,37 +26,43 @@ export default class App extends Component {
     const keyCode = e.which || e.keyCode
     const ENTER = 13
     if (keyCode === ENTER) {
-      ajax().get(this.getGitHubApiUrl(e.target.value)).then((result) => {
-        console.log(result)
-        this.setState({
-          userInfo: {
-            username: result.name,
-            photo: result.avatar_url,
-            login: result.login,
-            repos: result.public_repos,
-            followers: result.followers,
-            following: result.following
-          },
-          repos: [],
-          starred:[]
-        })
+      this.setState({
+        isFetching: true
       })
+      ajax().get(this.getGitHubApiUrl(e.target.value)).then((result) => {
+          console.log(result)
+          this.setState({
+            userInfo: {
+              username: result.name,
+              photo: result.avatar_url,
+              login: result.login,
+              repos: result.public_repos,
+              followers: result.followers,
+              following: result.following
+            },
+            repos: [],
+            starred: []
+          })
+        })
+        .always(() => this.setState({
+          isFetching: false
+        }))
     }
   }
 
-  getRepos (type){
+  getRepos(type) {
     return (e) => {
       ajax().get(this.getGitHubApiUrl(this.state.userInfo.login, type))
-      .then(response => {
-        this.setState({
-          [type]: response.map((repo) => {
-            return {
-              name: repo.name,
-              link: repo.html_url
-            }
+        .then(response => {
+          this.setState({
+            [type]: response.map((repo) => {
+              return {
+                name: repo.name,
+                link: repo.html_url
+              }
+            })
           })
         })
-      })
     }
   }
 
@@ -70,6 +77,9 @@ export default class App extends Component {
     }
     starred = {
       this.state.starred
+    }
+    isFetching = {
+      this.state.isFetching
     }
     handleSearch = {
       (e) => this.handleSearch(e)
