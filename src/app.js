@@ -14,6 +14,7 @@ export default class App extends Component {
       starred: [],
       isFetching: false
     }
+    this.handleSearch = this.handleSearch.bind(this)
   }
 
   getGitHubApiUrl(username, type) {
@@ -82,7 +83,7 @@ export default class App extends Component {
       this.state.isFetching
     }
     handleSearch = {
-      (e) => this.handleSearch(e)
+      this.handleSearch
     }
     getRepos = {
       () => this.getRepos('repos')
