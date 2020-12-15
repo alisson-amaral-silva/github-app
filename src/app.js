@@ -15,11 +15,17 @@ export default class App extends Component {
     }
   }
 
+  getGitHubApiUrl(username, type) {
+    const internalUser = username ? `/${username}` : '';
+    const internalType = type ? `/${type}` : '';
+    return `https://api.github.com/users/${internalUser}${internalType}`
+  }
+
   handleSearch(e) {
     const keyCode = e.which || e.keyCode
     const ENTER = 13
     if (keyCode === ENTER) {
-      ajax().get(`https://api.github.com/users/${e.target.value}`).then((result) => {
+      ajax().get(this.getGitHubApiUrl(e.target.value)).then((result) => {
         console.log(result)
         this.setState({
           userInfo: {
@@ -29,7 +35,9 @@ export default class App extends Component {
             repos: result.public_repos,
             followers: result.followers,
             following: result.following
-          }
+          },
+          repos: [],
+          starred:[]
         })
       })
     }
@@ -37,7 +45,7 @@ export default class App extends Component {
 
   getRepos (type){
     return (e) => {
-      ajax().get(`https://api.github.com/users/alisson-amaral-silva/${type}`)
+      ajax().get(this.getGitHubApiUrl(this.state.userInfo.login, type))
       .then(response => {
         this.setState({
           [type]: response.map((repo) => {
