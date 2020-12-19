@@ -4,6 +4,9 @@ import React, {
   Component
 } from 'react'
 import AppContent from './components/app-content'
+import ajax from '@fdaciuk/ajax'
+
+// import './css/style.css'
 
 export default class App extends Component {
   constructor() {
@@ -20,7 +23,7 @@ export default class App extends Component {
   getGitHubApiUrl(username, type) {
     const internalUser = username ? `/${username}` : '';
     const internalType = type ? `/${type}` : '';
-    return `https://api.github.com/users/${internalUser}${internalType}`
+    return `https://api.github.com/users${internalUser}${internalType}`
   }
 
   handleSearch(e) {

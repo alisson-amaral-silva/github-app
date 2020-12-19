@@ -1,7 +1,6 @@
 'use strict'
 
 import React from 'react'
-import ajax from '@fdaciuk/ajax'
 
 const Search = ({handleSearch, isDisabled}) => (
     <div className='search'>
