@@ -62,7 +62,7 @@ export default class App extends Component {
             [type]: response.map((repo) => {
               return {
                 name: repo.name,
-                link: repo.html_url
+                link: repo.owner.html_url
               }
             })
           })

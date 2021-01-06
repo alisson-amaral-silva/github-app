@@ -1,7 +1,6 @@
 'use strict'
 
 import React, { PropTypes } from 'react'
-
 const UserInfo = ({ userInfo }) => (
     <div className='user-info'>
     <img src={userInfo.photo} />
